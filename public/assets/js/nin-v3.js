@@ -9,14 +9,15 @@ $("#verifyNIN").on("click", function (event) {
     var preloader = $(".page-loading");
 
     function showLoader() {
-        preloader.addClass("active").show();
+        if (typeof showGlobalLoader === 'function') {
+            showGlobalLoader();
+        }
     }
 
     function hideLoader() {
-        preloader.removeClass("active");
-        setTimeout(function () {
-            preloader.hide();
-        }, 1000);
+        if (typeof hideGlobalLoader === 'function') {
+            hideGlobalLoader();
+        }
     }
 
     $.ajax({
@@ -32,7 +33,7 @@ $("#verifyNIN").on("click", function (event) {
             $("#download").addClass("d-none");
         },
         success: function (result) {
-            $("#loader").hide();
+            hideLoader();
 
             if (result && result.data) {
 

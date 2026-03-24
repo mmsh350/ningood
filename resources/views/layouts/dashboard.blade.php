@@ -266,7 +266,7 @@
         }
 
         /* Branded Loader */
-        #loader-wrapper {
+        #loader-wrapper, .page-loading {
             position: fixed;
             top: 0;
             left: 0;
@@ -279,6 +279,11 @@
             align-items: center;
             z-index: 99999;
             transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        #loader-wrapper.active, .page-loading.active {
+            visibility: visible !important;
+            opacity: 1 !important;
+            display: flex !important;
         }
         .loader-content {
             display: flex;
@@ -306,7 +311,7 @@
 
 <body>
     <!-- Preloader -->
-    <div id="loader-wrapper">
+    <div id="loader-wrapper" class="page-loading">
         <div class="loader-content">
             <div class="loader-spinner"></div>
             <div class="loader-logo">Ningood</div>
@@ -352,7 +357,15 @@
     <script src="{{ asset('assets/js/settings.js') }}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
     <script>
-        window.addEventListener('load', function() {
+        function showGlobalLoader() {
+            const loader = document.getElementById('loader-wrapper');
+            if (loader) {
+                loader.style.visibility = 'visible';
+                loader.style.opacity = '1';
+            }
+        }
+
+        function hideGlobalLoader() {
             const loader = document.getElementById('loader-wrapper');
             if (loader) {
                 loader.style.opacity = '0';
@@ -360,6 +373,10 @@
                     loader.style.visibility = 'hidden';
                 }, 500);
             }
+        }
+
+        window.addEventListener('load', function() {
+            hideGlobalLoader();
         });
     </script>
     <script>
