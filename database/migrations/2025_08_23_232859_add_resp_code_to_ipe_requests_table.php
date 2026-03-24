@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::table('ipe_requests', function (Blueprint $table) {
             $table->enum('resp_code', ['100', '101', '200', '400'])
-                ->after('status')
                 ->default('100');
-            $table->string('tag')->after('resp_code')->nullable();
+            $table->string('tag')->nullable();
         });
     }
 
