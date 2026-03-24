@@ -37,7 +37,7 @@
     <link rel="stylesheet" href="{{ asset('assets/index/css/style-three11.css') }}">
     <!-- Favicon -->
      <link rel="shortcut icon"
-        href="{{ asset('assets/images/' . $settings->favicon ?? 'assets/images/default_favicon.png') }}">
+        href="{{ asset('assets/images/favicon.png') }}">
 
 </head>
 
