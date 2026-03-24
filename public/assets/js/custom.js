@@ -1,22 +1,4 @@
-(function () {
-
-    var preloader = document.querySelector('.page-loading');
-
-    preloader.classList.add('active');
-    preloader.style.display = 'block';
-
-    function hideLoader() {
-        preloader.classList.remove('active');
-        setTimeout(function () {
-            preloader.style.display = 'none';
-        }, 1000);
-    }
-
-    window.addEventListener('load', function () {
-        hideLoader();
-    });
-
-})();
+// Loader logic moved to dashboard.blade.php for better control
 
 (function () {
     'use strict'

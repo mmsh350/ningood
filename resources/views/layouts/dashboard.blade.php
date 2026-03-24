@@ -278,12 +278,15 @@
             justify-content: center;
             align-items: center;
             z-index: 99999;
+            opacity: 0;
+            visibility: hidden;
             transition: opacity 0.5s ease, visibility 0.5s;
         }
         #loader-wrapper.active, .page-loading.active {
             visibility: visible !important;
             opacity: 1 !important;
             display: flex !important;
+            transition: none !important;
         }
         .loader-content {
             display: flex;
@@ -311,7 +314,7 @@
 
 <body>
     <!-- Preloader -->
-    <div id="loader-wrapper" class="page-loading">
+    <div id="loader-wrapper" class="page-loading active">
         <div class="loader-content">
             <div class="loader-spinner"></div>
             <div class="loader-logo">Ningood</div>
@@ -357,26 +360,22 @@
     <script src="{{ asset('assets/js/settings.js') }}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
     <script>
-        function showGlobalLoader() {
+        window.showGlobalLoader = function() {
             const loader = document.getElementById('loader-wrapper');
             if (loader) {
-                loader.style.visibility = 'visible';
-                loader.style.opacity = '1';
+                loader.classList.add('active');
             }
-        }
+        };
 
-        function hideGlobalLoader() {
+        window.hideGlobalLoader = function() {
             const loader = document.getElementById('loader-wrapper');
             if (loader) {
-                loader.style.opacity = '0';
-                setTimeout(() => {
-                    loader.style.visibility = 'hidden';
-                }, 500);
+                loader.classList.remove('active');
             }
-        }
+        };
 
         window.addEventListener('load', function() {
-            hideGlobalLoader();
+            window.hideGlobalLoader();
         });
     </script>
     <script>

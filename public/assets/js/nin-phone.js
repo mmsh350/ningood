@@ -7,17 +7,16 @@ $("#verifyNIN").on("click", function (event) {
     let download = document.getElementById("download");
     $("#errorMsg").hide();
 
-    var preloader = $('.page-loading');
-
     function showLoader() {
-        preloader.addClass('active').show();
+        if (typeof showGlobalLoader === 'function') {
+            showGlobalLoader();
+        }
     }
 
     function hideLoader() {
-        preloader.removeClass('active');
-        setTimeout(function () {
-            preloader.hide();
-        }, 1000);
+        if (typeof hideGlobalLoader === 'function') {
+            hideGlobalLoader();
+        }
     }
 
     $.ajax({

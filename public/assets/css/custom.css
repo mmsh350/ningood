@@ -1,4 +1,4 @@
-.page-loading {
+/* .page-loading {
     position: fixed;
     top: 0;
     left: 0;
@@ -40,7 +40,7 @@
     font-weight: normal;
     color: #666276;
     margin-top: 1rem;
-}
+} */
 
 .page-spinner {
     display: inline-block;
