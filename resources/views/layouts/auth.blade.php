@@ -44,10 +44,10 @@
             width: 100%;
             height: 100%;
             background-color: #ffffff;
-            background-image: 
-                radial-gradient(at 0% 0%, hsla(220,100%,95%,1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, hsla(200,100%,98%,1) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, hsla(220,100%,95%,1) 0, transparent 50%), 
+            background-image:
+                radial-gradient(at 0% 0%, hsla(220,100%,95%,1) 0, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(200,100%,98%,1) 0, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(220,100%,95%,1) 0, transparent 50%),
                 radial-gradient(at 50% 100%, hsla(220,100%,98%,1) 0, transparent 50%);
             z-index: -2;
         }
@@ -126,7 +126,7 @@
     </style>
 </head>
 
-<body class="bg-white text-slate-900 antialiased min-h-screen flex flex-col relative overflow-hidden">
+<body class="bg-white text-slate-900 antialiased min-h-screen flex flex-col relative overflow-x-hidden">
     <!-- Preloader -->
     <div id="loader-wrapper">
         <div class="loader-content">
@@ -135,10 +135,12 @@
         </div>
     </div>
     <!-- Mesh Background Layers -->
-    <div class="mesh-gradient"></div>
-    <div class="floating-shape bg-primary-200 w-96 h-96 -top-20 -left-20"></div>
-    <div class="floating-shape bg-blue-100 w-80 h-80 top-1/2 -right-20"></div>
-    <div class="floating-shape bg-indigo-50 w-72 h-72 bottom-0 left-1/4"></div>
+    <div class="fixed inset-0 overflow-hidden pointer-events-none" style="z-index: -1;">
+        <div class="mesh-gradient"></div>
+        <div class="floating-shape bg-primary-200 w-96 h-96 -top-20 -left-20"></div>
+        <div class="floating-shape bg-blue-100 w-80 h-80 top-1/2 -right-20"></div>
+        <div class="floating-shape bg-indigo-50 w-72 h-72 bottom-0 left-1/4"></div>
+    </div>
 
     <!-- Main Content Area -->
     <main class="flex-grow flex items-center justify-center p-6">

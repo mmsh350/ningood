@@ -24,6 +24,7 @@ class SiteSettingController extends Controller
             'login_enabled' => 'nullable|boolean',
             'register_enabled' => 'nullable|boolean',
             'nin_mod_enabled' => 'nullable|boolean',
+            'whatsapp_url' => 'nullable|url',
         ]);
 
         // For each checkbox, set 1 if present, 0 if missing
@@ -31,6 +32,7 @@ class SiteSettingController extends Controller
         $data['login_enabled'] = $request->has('login_enabled') ? 1 : 0;
         $data['register_enabled'] = $request->has('register_enabled') ? 1 : 0;
         $data['nin_mod_enabled'] = $request->has('nin_mod_enabled') ? 1 : 0;
+        $data['whatsapp_url'] = $request->input('whatsapp_url');
 
         $settings = SiteSetting::firstOrNew();
         $settings->fill($data);

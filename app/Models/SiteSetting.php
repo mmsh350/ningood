@@ -24,6 +24,7 @@ class SiteSetting extends Model
         'nin_mod_enabled',
         'nin_consent',
         'bvn_consent',
+        'whatsapp_url',
     ];
 
     protected static function booted()

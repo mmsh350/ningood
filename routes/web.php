@@ -115,8 +115,6 @@ Route::middleware(['auth', 'user.active'])->group(function () {
             Route::get('/verify-nin-phone', [VerificationController::class, 'phoneVerify'])->name('verify-nin-phone');
             Route::get('/verify-bvn', [VerificationController::class, 'bvnVerify'])->name('verify-bvn');
 
-            Route::get('/verify-tin', [VerificationController::class, 'tinVerify'])->name('verify-tin');
-
             Route::get('/nin-personalize', [VerificationController::class, 'ninPersonalize'])->name('personalize-nin');
             // Route::get('/ipe', [VerificationController::class, 'showIpe'])->name('ipe');
             Route::get('/bvn-enrollment', [EnrollmentController::class, 'bvnEnrollment'])->name('bvn-enrollment');
@@ -188,8 +186,9 @@ Route::middleware(['auth', 'user.active'])->group(function () {
             Route::get('/premiumSlip/{id}', [VerificationController::class, 'premiumSlip'])->name('premiumSlip');
             Route::get('/basicSlip/{id}', [VerificationController::class, 'basicSlip'])->name('basicSlip');
 
-             Route::post('/tin-retrieve', [VerificationController::class, 'tinRetrieve'])->name('tinRetrieve');
-             Route::get('/tinSlip/{id}/{type}', [VerificationController::class, 'tinSlip'])->name('tinSlip');
+            Route::get('/verify-tin', [VerificationController::class, 'tinVerify'])->name('verify-tin');
+            Route::post('/tin-retrieve', [VerificationController::class, 'tinRetrieve'])->name('tinRetrieve');
+            Route::get('/tinSlip/{id}/{type}', [VerificationController::class, 'tinSlip'])->name('tinSlip');
 
             // NIN Services
             Route::get('/nin-services', [ServicesController::class, 'ninServices'])->name('nin.services');
@@ -217,14 +216,12 @@ Route::middleware(['auth', 'user.active'])->group(function () {
             Route::get('/company-registration/{id}/edit', [CompanyRegistrationController::class, 'edit'])->name('company.edit');
             Route::put('/company-registration/{id}', [CompanyRegistrationController::class, 'update'])->name('company.update');
 
-            // Whatsapp API Support--------------------------------------------------------------------------
+             //Whatsapp API Support--------------------------------------------------------------------------
             Route::get('/support', function () {
-                // $phoneNumber = env('phoneNumber');
-                // $message = urlencode(env('message'));
-                // $url = env('API_URL')."{$phoneNumber}&text={$message}";
-
-                return redirect()->away(env('API_URL'));
+                $settings = SiteSetting::first();
+                return redirect()->away($settings->whatsapp_url??env('API_URL'));
             })->name('support');
+
         });
 
         // BVN Modification

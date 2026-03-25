@@ -9,15 +9,14 @@ $("#verifyNIN").on("click", function (event) {
     var preloader = $(".page-loading");
 
     function showLoader() {
-        if (typeof showGlobalLoader === 'function') {
-            showGlobalLoader();
-        }
+        preloader.addClass("active").show();
     }
 
     function hideLoader() {
-        if (typeof hideGlobalLoader === 'function') {
-            hideGlobalLoader();
-        }
+        preloader.removeClass("active");
+        setTimeout(function () {
+            preloader.hide();
+        }, 1000);
     }
 
     $.ajax({
@@ -33,7 +32,7 @@ $("#verifyNIN").on("click", function (event) {
             $("#download").hide();
         },
         success: function (result) {
-            $("#loader").hide();
+            hideLoader();
 
             if (result && result.status === "success") {
                 let displayContent = "";
@@ -66,10 +65,10 @@ $("#verifyNIN").on("click", function (event) {
 
                           <hr class="my-3">
 
-                          <div class="alert alert-primary border-0 bg-light-primary p-3 mb-0">
+                          <div class="alert alert-secondary border-0 bg-light-secondary p-3 mb-0">
                             <div class="d-flex align-items-center">
                               <div class="me-3">
-                                <i class="bi bi-check-circle-fill text-primary" style="font-size: 2rem;"></i>
+                                <i class="bi bi-check-circle-fill text-secondary" style="font-size: 2rem;"></i>
                               </div>
                               <div class="flex-grow-1">
                                 <small class="text-muted d-block mb-1"><i class="bi bi-receipt"></i> Tax ID Generated</small>
@@ -130,14 +129,14 @@ $("#verifyNIN").on("click", function (event) {
 
                           <hr class="my-3">
 
-                          <div class="alert alert-primary border-0 bg-light-primary p-3 mb-0">
+                          <div class="alert alert-secondary border-0 bg-light-secondary p-3 mb-0">
                             <div class="d-flex align-items-center">
                               <div class="me-3">
-                                <i class="bi bi-check-circle-fill text-primary" style="font-size: 2rem;"></i>
+                                <i class="bi bi-check-circle-fill text-dark" style="font-size: 2rem;"></i>
                               </div>
                               <div class="flex-grow-1">
                                 <small class="text-muted d-block mb-1"><i class="bi bi-receipt"></i> Tax ID Generated</small>
-                                <h5 class="fw-bold text-primary mb-0" style="font-family: 'Courier New', monospace; letter-spacing: 1px;">
+                                <h5 class="fw-bold text-dark mb-0" style="font-family: 'Courier New', monospace; letter-spacing: 1px;">
                                   ${result.data.tax_id}
                                 </h5>
                               </div>

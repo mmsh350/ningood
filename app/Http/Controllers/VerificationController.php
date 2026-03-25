@@ -1335,23 +1335,13 @@ class VerificationController extends Controller
                 'dateOfBirth.date' => 'Date of birth must be a valid date.',
             ]);
 
-            // Normalize date into YYYY/MM/DD for downstream APIs
-
-            $dobRaw = $request->input('dateOfBirth');
-            try {
-
-                $dob = \Carbon\Carbon::parse($dobRaw)->format('Y-m-d');
-            } catch (\Exception $e) {
-                $dob = $dobRaw;
-            }
-
             $payload = [
+                'entity' => $entity,
                 'nin' => $request->input('nin'),
                 'firstName' => $request->input('firstName'),
                 'lastName' => $request->input('lastName'),
-                'dateOfBirth' => $dob,
+                'dateOfBirth' => $request->input('dateOfBirth'),
             ];
-
         }
 
         // Corporate (RC) validation only when selected
@@ -1366,6 +1356,7 @@ class VerificationController extends Controller
             ]);
 
             $payload = [
+                'entity' => $entity,
                 'type' => (string) $request->input('type'),
                 'rc' => $request->input('rc'),
             ];
@@ -1404,8 +1395,8 @@ class VerificationController extends Controller
 
              try {
 
-                $url = env('AREWA_SMART_URL').'/tin/verify';
-                $token = env('AREWA_SMART_TOKEN');
+                $url = env('BASE_URL_VERIFY_USER').'api/v1/verify-tin';
+                $token = env('VERIFY_USER_TOKEN');
 
                 $headers = [
                     'Accept: application/json, text/plain, */*',
@@ -1434,12 +1425,12 @@ class VerificationController extends Controller
                 // Close cURL session
                 curl_close($ch);
 
-                // $response ='{"status":"success","message":"TIN REGISTRATION Successful","data":{"dateOfBirth":"22/02/2002","firstName":"SHAFIU","lastName":"MUHAMMAD","nin":"51307511444","tax_id":"2512104317591","tax_residency":"Kebbi State"},"transaction_ref":"tin0643U87T0","charge":"80.00"}';
-                //   $response = '{"status":"success","message":"TIN REGISTRATION Successful","data":{"company_name":"OMNOSTOCK LIMITED","rc":"9084483","tax_id":"2523084691038","type":"3"},"transaction_ref":"tin5604M1UXG","charge":"100.00"}';
+                // $response = '{"status":"success","message":"TIN REGISTRATION Successful","data":{"dateOfBirth":"22/02/2002","firstName":"SHAFIU","lastName":"MUHAMMAD","nin":"51307511444","tax_id":"2512104317591","tax_residency":"Kebbi State"},"transaction_ref":"tin0643U87T0","charge":"80.00"}';
+                // //   $response = '{"status":"success","message":"TIN REGISTRATION Successful","data":{"company_name":"OMNOSTOCK LIMITED","rc":"9084483","tax_id":"2523084691038","type":"3"},"transaction_ref":"tin5604M1UXG","charge":"100.00"}';
                 $response = json_decode($response, true);
                 Log::info('TIN Verification', $response);
 
-                if((isset($response['status']) && $response['status'] === "success")) {
+                if ((isset($response['status']) && $response['status'] === "success")) {
                     $data = $response['data'] ?? [];
 
                     if ($entity === 'individual') {
@@ -1470,7 +1461,7 @@ class VerificationController extends Controller
                                 'photo' => 'null',
                             ]);
                         } catch (\Exception $e) {
-                            Log::warning('Failed to create TIN individual verification: '.$e->getMessage());
+                            Log::warning('Failed to create TIN individual verification: ' . $e->getMessage());
                         }
                     } else {
                         // corporate
@@ -1484,10 +1475,10 @@ class VerificationController extends Controller
                                 'last_name' =>  "NA",
                                 'gender' => 'M' ?? null,
                                 'photo' => 'null',
-                                 'dob' => '1970-01-01',
+                                'dob' => '1970-01-01',
                             ]);
                         } catch (\Exception $e) {
-                            Log::warning('Failed to create TIN corporate verification: '.$e->getMessage());
+                            Log::warning('Failed to create TIN corporate verification: ' . $e->getMessage());
                         }
                     }
 
@@ -1495,12 +1486,12 @@ class VerificationController extends Controller
                     $balance = $wallet->balance - $ServiceFee;
                     Wallet::where('user_id', $loginUserId)->update(['balance' => $balance]);
 
-                    $serviceDesc = 'Wallet debitted with a service fee of ₦'.number_format($ServiceFee, 2);
+                    $serviceDesc = 'Wallet debitted with a service fee of ₦' . number_format($ServiceFee, 2);
                     $this->transactionService->createTransaction($loginUserId, $ServiceFee, 'TIN Verification', $serviceDesc, 'Wallet', 'Approved');
 
                     return response()->json([
                         'status' => 'success',
-                        'entity' =>$entity,
+                        'entity' => $entity,
                         'data' => $data,
                         'transaction_ref' => $response['transaction_ref'] ?? null,
                         'charge' => $ServiceFee,

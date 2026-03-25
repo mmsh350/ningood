@@ -48,6 +48,17 @@
                         </div>
                     @endif
                 </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-2xl p-2 mt-2" aria-labelledby="profileDropdown">
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}" class="m-0">
+                            @csrf
+                            <button type="submit" class="dropdown-item rounded-xl py-2 d-flex align-items-center gap-2 text-danger hover:bg-red-50 transition border-0 w-100 text-start">
+                                <i class="bi bi-box-arrow-right fs-6"></i>
+                                <span class="font-bold text-sm">Logout</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
             </div>
 
             <button class="navbar-toggler align-self-center border-0 bg-transparent p-0 d-lg-none" type="button"

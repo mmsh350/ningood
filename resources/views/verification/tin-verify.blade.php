@@ -46,14 +46,17 @@
                             </div>
                         </div>
                         <div class="card-body ">
-                            <div class="alert alert-warning border-1 bg-light-warning d-flex align-items-start gap-3 p-3 rounded-2">
+                            <div
+                                class="alert alert-warning border-1 bg-light-warning d-flex align-items-start gap-3 p-3 rounded-2">
                                 <div class="flex-shrink-0 pt-1">
                                     <i class="bi bi-info-circle-fill text-warning" style="font-size: 1.5rem;"></i>
                                 </div>
                                 <div class="flex-grow-1">
                                     <h6 class="alert-heading fw-bold text-dark mb-2">Verification Fee Notice</h6>
                                     <p class="mb-2 small text-danger">
-                                        <strong>Note:</strong>   A <strong>₦{{ number_format($ServiceFee->amount, 2) }}</strong> verification fee will be charged from your wallet upon successful TIN generation.
+                                        <strong>Note:</strong> A
+                                        <strong>₦{{ number_format($ServiceFee->amount, 2) }}</strong> verification fee will
+                                        be charged from your wallet upon successful TIN generation.
                                     </p>
                                 </div>
                             </div>
@@ -67,14 +70,19 @@
                                     <form id="verifyForm" name="verifyForm" method="POST">
                                         @csrf
                                         <div class="mb-3 row">
-                                            <div class="col-md-12 d-flex justify-content-center flex-column align-items-center">
+                                            <div
+                                                class="col-md-12 d-flex justify-content-center flex-column align-items-center">
                                                 <p class="mb-2 text-muted text-center">Generate TIN Number</p>
                                                 <div class="btn-group mb-3" role="group" aria-label="Entity type">
-                                                    <input type="radio" class="btn-check" name="entity" id="entityIndividual" autocomplete="off" value="individual" checked>
-                                                    <label class="btn btn-outline-primary" for="entityIndividual">Individual (NIN)</label>
+                                                    <input type="radio" class="btn-check" name="entity"
+                                                        id="entityIndividual" autocomplete="off" value="individual" checked>
+                                                    <label class="btn btn-outline-primary" for="entityIndividual">Individual
+                                                        (NIN)</label>
 
-                                                    <input type="radio" class="btn-check" name="entity" id="entityCorporate" autocomplete="off" value="corporate">
-                                                    <label class="btn btn-outline-primary" for="entityCorporate">Corporate (RC)</label>
+                                                    <input type="radio" class="btn-check" name="entity"
+                                                        id="entityCorporate" autocomplete="off" value="corporate">
+                                                    <label class="btn btn-outline-primary" for="entityCorporate">Corporate
+                                                        (RC)</label>
                                                 </div>
                                             </div>
 
@@ -82,25 +90,31 @@
                                                 <div class="mb-2">
                                                     <label class="form-label">NIN</label>
                                                     <div class="input-group">
-                                                       
-                                                        <input type="text" id="nin" name="nin" value="" class="form-control" maxlength="11" placeholder="e.g. 44516677277" />
+
+                                                        <input type="text" id="nin" name="nin" value=""
+                                                            class="form-control" maxlength="11"
+                                                            placeholder="e.g. 44516677277" />
                                                     </div>
                                                 </div>
                                                 <div class="mb-2">
                                                     <label class="form-label">First Name</label>
-                                                    <input type="text" id="firstName" name="firstName" class="form-control" placeholder="First name" />
+                                                    <input type="text" id="firstName" name="firstName"
+                                                        class="form-control" placeholder="First name" />
                                                 </div>
                                                 <div class="mb-2">
                                                     <label class="form-label">Last Name</label>
-                                                    <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Last name" />
+                                                    <input type="text" id="lastName" name="lastName"
+                                                        class="form-control" placeholder="Last name" />
                                                 </div>
                                                 <div>
                                                     <label class="form-label">Date of Birth</label>
-                                                    <input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control" />
+                                                    <input type="date" id="dateOfBirth" name="dateOfBirth"
+                                                        class="form-control" />
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-8 col-lg-6 mx-auto" id="corporateFields" style="display:none;">
+                                            <div class="col-md-8 col-lg-6 mx-auto" id="corporateFields"
+                                                style="display:none;">
                                                 <div class="mb-2">
                                                     <label class="form-label">Entity Type</label>
                                                     <select id="type" name="type" class="form-select text-dark">
@@ -114,13 +128,16 @@
                                                 <div>
                                                     <label class="form-label" for="rc">RC Number</label>
                                                     <div class="input-group">
-                                                        <input type="text" id="rc" name="rc" value="" class="form-control" placeholder="e.g. 8891227" />
+                                                        <input type="text" id="rc" name="rc" value=""
+                                                            class="form-control" placeholder="e.g. 8891227" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="text-center mt-3">
-                                            <button type="submit" id="verifyNIN" style="background:#2563eb; transition: all 0.3s ease;" class="btn text-light hover:bg-primary-700 shadow-sm"><i class="lar la-check-circle"></i> Generate TIN</button>
+                                            <button type="submit" id="verifyNIN" class="btn text-light hover:bg-primary-700 shadow-sm" style="background:#2563eb; transition: all 0.3s ease;">
+                                                <i class="lar la-check-circle"></i> Generate TIN
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -145,16 +162,17 @@
                                 </div>
                                 <div class="validation-info col-md-12 mb-2 hidden" id="validation-info">
                                     <center>
-                                        <img src="{{ asset('assets/images/search.png') }}" width="20%" alt="Search Icon">
+                                        <img src="{{ asset('assets/images/search.png') }}" width="20%"
+                                            alt="Search Icon">
                                         <p class="mt-5">This section will display search results </p>
                                     </center>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="btn-list text-center" style="display:none;" id="download">
                                         <div class="mb-2 mr-2">
-                                            <a href="#" id="download_id" type="button"
-                                                class="btn text-light" style="background:#2563eb; transition: all 0.3s ease;"><i class="bi bi-download"></i>&nbsp;
-                                                Download TIN (&#x20A6;{{ $standard_tin_fee->amount }})</a>
+                                            <a href="#" id="download_id" type="button" class="btn text-light hover:bg-primary-700 shadow-sm" style="background:#2563eb; transition: all 0.3s ease;">
+                                                <i class="bi bi-download"></i>&nbsp;Download TIN (&#x20A6;{{ $standard_tin_fee->amount }})
+                                            </a>
                                         </div>
 
                                     </div>
@@ -175,43 +193,43 @@
     <div id="responsive-overlay"></div>
 @endsection
 @push('scripts')
-                                      <script src="{{ asset('assets/js/tin.js') }}"></script>
-                                      <script>
-                                                (function(){
-                                                    var ind = document.getElementById('entityIndividual');
-                                                    var corp = document.getElementById('entityCorporate');
-                                                    var individualFields = document.getElementById('individualFields');
-                                                    var corporateFields = document.getElementById('corporateFields');
-                                                    var typeSelect = document.getElementById('type');
-                                                    var rcLabel = document.querySelector('label[for="rc"]');
+    <script src="{{ asset('assets/js/tin.js') }}"></script>
+    <script>
+        (function() {
+            var ind = document.getElementById('entityIndividual');
+            var corp = document.getElementById('entityCorporate');
+            var individualFields = document.getElementById('individualFields');
+            var corporateFields = document.getElementById('corporateFields');
+            var typeSelect = document.getElementById('type');
+            var rcLabel = document.querySelector('label[for="rc"]');
 
-                                                    function toggleEntity(){
-                                                        var isCorp = corp.checked;
-                                                        corporateFields.style.display = isCorp ? 'block' : 'none';
-                                                        individualFields.style.display = isCorp ? 'none' : 'block';
+            function toggleEntity() {
+                var isCorp = corp.checked;
+                corporateFields.style.display = isCorp ? 'block' : 'none';
+                individualFields.style.display = isCorp ? 'none' : 'block';
 
-                                                    }
+            }
 
-                                                    function toggleLabel(){
-                                                        if(typeSelect.value === '1'){
-                                                            rcLabel.textContent = 'BN Number';
-                                                        } else {
-                                                            rcLabel.textContent = 'RC Number';
-                                                        }
-                                                    }
+            function toggleLabel() {
+                if (typeSelect.value === '1') {
+                    rcLabel.textContent = 'BN Number';
+                } else {
+                    rcLabel.textContent = 'RC Number';
+                }
+            }
 
-                                                    // No payload preview required — keep only toggle behavior
+            // No payload preview required — keep only toggle behavior
 
-                                                    if(ind) ind.addEventListener('change', toggleEntity);
-                                                    if(corp) corp.addEventListener('change', toggleEntity);
-                                                    if(typeSelect) typeSelect.addEventListener('change', toggleLabel);
+            if (ind) ind.addEventListener('change', toggleEntity);
+            if (corp) corp.addEventListener('change', toggleEntity);
+            if (typeSelect) typeSelect.addEventListener('change', toggleLabel);
 
-                                                    // initialize
-                                                    toggleEntity();
-                                                    toggleLabel();
+            // initialize
+            toggleEntity();
+            toggleLabel();
 
-                                                })();
-                                            </script>
+        })();
+    </script>
     <script>
         function enablePopups() {
             const testPopup = window.open('', '_blank', 'width=1,height=1');
