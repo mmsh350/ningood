@@ -128,8 +128,8 @@ class VerificationController extends Controller
                     'gender' => $request->input('gender'),
                 ];
 
-                $url = env('BASE_URL_VERIFY_USER2').'api/v1/verify-demo';
-                $token = env('VERIFY_USER_TOKEN2');
+                $url = config('services.verify_user2.base_url').'api/v1/verify-demo';
+                $token = config('services.verify_user2.token');
 
                 $headers = [
                     'Accept: application/json, text/plain, */*',
@@ -254,8 +254,8 @@ class VerificationController extends Controller
                     'gender' => $request->input('gender'),
                 ];
 
-                $url = env('BASE_URL_VERIFY_USER2').'api/v1/verify-nin/v4/demo';
-                $token = env('VERIFY_USER_TOKEN2');
+                $url = config('services.verify_user2.base_url').'api/v1/verify-nin/v4/demo';
+                $token = config('services.verify_user2.token');
 
                 $headers = [
                     'Accept: application/json, text/plain, */*',
@@ -379,8 +379,8 @@ class VerificationController extends Controller
 
                 $data = ['nin' => $request->input('nin')];
 
-                $url = env('BASE_URL_VERIFY_USER2').'api/v1/verify-nin/v3';
-                $token = env('VERIFY_USER_TOKEN2');
+                $url = config('services.verify_user2.base_url').'api/v1/verify-nin/v3';
+                $token = config('services.verify_user2.token');
 
                 $headers = [
                     'Accept: application/json, text/plain, */*',
@@ -587,8 +587,8 @@ class VerificationController extends Controller
 
                 $data = ['nin' => $request->input('nin')];
 
-                $url = env('BASE_URL_VERIFY_USER2').'api/v1/verify-nin/v2';
-                $token = env('VERIFY_USER_TOKEN2');
+                $url = config('services.verify_user2.base_url').'api/v1/verify-nin/v2';
+                $token = config('services.verify_user2.token');
 
                 $headers = [
                     'Accept: application/json, text/plain, */*',
@@ -711,8 +711,8 @@ class VerificationController extends Controller
 
                 $data = ['nin' => $request->input('nin')];
 
-                $url = env('BASE_URL_VERIFY_USER2').'api/v1/verify-nin/v4';
-                $token = env('VERIFY_USER_TOKEN2');
+                $url = config('services.verify_user2.base_url').'api/v1/verify-nin/v4';
+                $token = config('services.verify_user2.token');
 
                 $headers = [
                     'Accept: application/json, text/plain, */*',
@@ -830,8 +830,8 @@ class VerificationController extends Controller
 
                 $data = ['nin' => $request->input('nin')];
 
-                $url = env('BASE_URL_VERIFY_USER2').'api/v1/verify-nin/v5';
-                $token = env('VERIFY_USER_TOKEN2');
+                $url = config('services.verify_user2.base_url').'api/v1/verify-nin/v5';
+                $token = config('services.verify_user2.token');
 
                 $headers = [
                     'Accept: application/json, text/plain, */*',
@@ -1395,8 +1395,8 @@ class VerificationController extends Controller
 
              try {
 
-                $url = env('BASE_URL_VERIFY_USER').'api/v1/verify-tin';
-                $token = env('VERIFY_USER_TOKEN');
+                $url = config('services.verify_user.base_url').'api/v1/verify-tin';
+                $token = config('services.verify_user.token');
 
                 $headers = [
                     'Accept: application/json, text/plain, */*',
@@ -1586,8 +1586,8 @@ class VerificationController extends Controller
 
             $data = ['bvn' => $bvn];
 
-            $url = env('BASE_URL_VERIFY_USER2').'api/v1/verify-bvn';
-            $token = env('VERIFY_USER_TOKEN2');
+            $url = config('services.verify_user2.base_url').'api/v1/verify-bvn';
+            $token = config('services.verify_user2.token');
             $headers = [
                 'Accept: application/json, text/plain, */*',
                 'Content-Type: application/json',
@@ -1700,8 +1700,8 @@ class VerificationController extends Controller
 
                 $data = ['nin' => $request->input('nin')];
 
-                $url = env('BASE_URL_VERIFY_USER2').'api/v1/verify-nin';
-                $token = env('VERIFY_USER_TOKEN2');
+                $url = config('services.verify_user2.base_url').'api/v1/verify-nin';
+                $token = config('services.verify_user2.token');
 
                 $headers = [
                     'Accept: application/json, text/plain, */*',
@@ -1824,8 +1824,8 @@ class VerificationController extends Controller
 
                 $data = ['phone' => $request->input('nin')];
 
-                $url = env('BASE_URL_VERIFY_USER2').'api/v1/verify-phone';
-                $token = env('VERIFY_USER_TOKEN2');
+                $url = config('services.verify_user2.base_url').'api/v1/verify-phone';
+                $token = config('services.verify_user2.token');
 
                 $headers = [
                     'Accept: application/json, text/plain, */*',
@@ -1939,8 +1939,8 @@ class VerificationController extends Controller
 
                 $data = ['phone' => $request->input('nin')];
 
-                $url = env('BASE_URL_VERIFY_USER2').'api/v1/verify-nin/v4/phone';
-                $token = env('VERIFY_USER_TOKEN2');
+                $url = config('services.verify_user2.base_url').'api/v1/verify-nin/v4/phone';
+                $token = config('services.verify_user2.token');
 
                 $headers = [
                     'Accept: application/json, text/plain, */*',
@@ -2371,8 +2371,8 @@ class VerificationController extends Controller
 
                 $data = ['bvn' => $request->input('bvn')];
 
-                $url = env('BASE_URL_VERIFY_USER2').'api/v1/verify-bvn';
-                $token = env('VERIFY_USER_TOKEN2');
+                $url = config('services.verify_user2.base_url').'api/v1/verify-bvn';
+                $token = config('services.verify_user2.token');
 
                 $headers = [
                     'Accept: application/json, text/plain, */*',
@@ -2490,8 +2490,8 @@ class VerificationController extends Controller
 
                 $data = ['trackingId' => $request->input('trackingId')];
 
-                $url = env('BASE_URL_VERIFY_USER').'api/v1/tracking-nin';
-                $token = env('VERIFY_USER_TOKEN');
+                $url = config('services.verify_user.base_url').'api/v1/tracking-nin';
+                $token = config('services.verify_user.token');
 
                 $headers = [
                     'Accept: application/json, text/plain, */*',
@@ -3055,8 +3055,8 @@ class VerificationController extends Controller
         ];
 
         try {
-            $url = rtrim(env('BASE_URL_VERIFY_USER2'), '/').'/api/v1/bvn/search';
-            $token = env('VERIFY_USER_TOKEN2');
+            $url = config('services.verify_user2.base_url').'api/v1/bvn/search';
+            $token = config('services.verify_user2.token');
 
             $headers = [
                 'Accept: application/json',
@@ -3286,8 +3286,8 @@ class VerificationController extends Controller
 
                 $data = ['phone' => $request->input('phoneNumber')];
 
-                $url = env('BASE_URL_VERIFY_USER').'api/v1/bvn/verify-phone';
-                $token = env('VERIFY_USER_TOKEN');
+                $url = config('services.verify_user.base_url').'api/v1/bvn/verify-phone';
+                $token = config('services.verify_user.token');
 
                 $headers = [
                     'Accept: application/json, text/plain, */*',
@@ -3676,8 +3676,8 @@ class VerificationController extends Controller
         }
 
         try {
-            $url = env('BASE_URL_VERIFY_USER2') . 'api/v1/ipe';
-            $token = env('VERIFY_USER_TOKEN2');
+            $url = config('services.verify_user2.base_url') . 'api/v1/ipe';
+            $token = config('services.verify_user2.token');
             $data = ['trackingId' => strtoupper($request->input('trackingId'))];
 
             $response = Http::withToken($token)->timeout(40)->post($url, $data);

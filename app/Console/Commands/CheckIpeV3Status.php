@@ -49,8 +49,8 @@ class CheckIpeV3Status extends Command
         foreach ($requests as $request) {
             try {
                 $request->touch();
-                $url = env('BASE_URL_VERIFY_USER2') . 'api/v1/ipe-status';
-                $token = env('VERIFY_USER_TOKEN2');
+                $url = config('services.verify_user2.base_url') . 'api/v1/ipe-status';
+                $token = config('services.verify_user2.token');
                 $data = ['trackingId' => $request->trackingId];
 
                 Log::info("Checking status for IPE V3: {$request->trackingId}");

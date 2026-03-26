@@ -39,4 +39,14 @@ return [
         'url' => env('BANK_URL', env('APP_URL').'/api/v1/bvn-modifications/services'),
     ],
 
+    'verify_user' => [
+        'base_url' => env('BASE_URL_VERIFY_USER'),
+        'token' => env('VERIFY_USER_TOKEN'),
+    ],
+
+    'verify_user2' => [
+        'base_url' => env('BASE_URL_VERIFY_USER2'),
+        'token' => env('VERIFY_USER_TOKEN2'),
+    ],
+
 ];

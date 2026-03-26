@@ -24,7 +24,7 @@ class BankDataService
         try {
 
             $url = $this->apiUrl;
-            $token = env('VERIFY_USER_TOKEN');
+            $token = config('services.verify_user.token');
 
             $headers = [
                 'Accept: application/json, text/plain, */*',

@@ -40,8 +40,8 @@ class CheckBvnRequestStatus extends Command
             $userId = $request->user_id;
 
             try {
-                $url = env('BASE_URL_VERIFY_USER').'api/v1/bvn-modifications/status/'.$refno;
-                $token = env('VERIFY_USER_TOKEN');
+                $url = config('services.verify_user.base_url').'api/v1/bvn-modifications/status/'.$refno;
+                $token = config('services.verify_user.token');
 
                 $response = Http::withHeaders([
                     'Accept' => 'application/json',

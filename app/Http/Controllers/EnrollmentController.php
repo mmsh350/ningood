@@ -102,8 +102,8 @@ class EnrollmentController extends Controller
 
             try {
 
-                // $url = env('BASE_URL_VERIFY_USER').'api/v1/enrollement-bvn';
-                // $token = env('VERIFY_USER_TOKEN');
+                // $url = config('services.verify_user.base_url').'api/v1/enrollement-bvn';
+                // $token = config('services.verify_user.token');
 
                 // $headers = [
                 //     'Accept: application/json, text/plain, */*',

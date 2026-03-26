@@ -53,8 +53,8 @@ class CheckBvnPhoneStatus extends Command
             $userId = $request->user_id;
 
             try {
-                $url = env('BASE_URL_VERIFY_USER2').'api/v1/bvn/status/'.$refno;
-                $token = env('VERIFY_USER_TOKEN2');
+                $url = config('services.verify_user2.base_url').'api/v1/bvn/status/'.$refno;
+                $token = config('services.verify_user2.token');
 
                 $response = Http::withHeaders([
                     'Accept' => 'application/json',
