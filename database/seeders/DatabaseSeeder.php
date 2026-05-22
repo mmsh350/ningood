@@ -23,9 +23,9 @@ class DatabaseSeeder extends Seeder
         ClaimCount::truncate();
 
         User::updateOrCreate(
-            ['email' => 'admin@idenfy.com.ng'],
+            ['email' => 'admin@ningood.ng'],
             [
-                'name' => 'Idenfy Admin',
+                'name' => 'NINGOOD Admin',
                 'email_verified_at' => now(),
                 'password' => Hash::make('@passwd12345'),
                 'role' => 'admin',

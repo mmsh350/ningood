@@ -17,8 +17,8 @@ class SiteSettingFactory extends Factory
     public function definition(): array
     {
         return [
-            'site_name' => 'Identify Your Identity',
-            'short_name' => 'Identify',
+            'site_name' => 'NINGOOD',
+            'short_name' => 'NINGOOD',
             'logo' => 'logo.png',
             'mini_logo' => 'mini-logo.png',
             'login_background_image' => 'login-bg-1.jpg',
