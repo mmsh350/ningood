@@ -16,7 +16,7 @@
                 <div class="navbar-brand-box">
                     <a href="{{ url('/') }}" class="logo logo-light" target="_blank">
                         <span class="logo-lg">
-                            <img src="{{ asset('assets/images/' . $settings->logo ?? 'assets/images/logo1.png') }}"
+                            <img src="{{ asset('assets/images/logo1.png') }}"
                                 alt="" height="50">
                         </span>
                     </a>
@@ -34,8 +34,6 @@
         Sincerely,
         <br>
         {{ $settings->site_name ?? config('app.name') }}
-        <br>
-        <a href="/"> {{ $settings->short_name ?? config('app.name') }}</a>
     </div>
 
 </body>
