@@ -1586,7 +1586,11 @@ class VerificationController extends Controller
 
             $data = ['bvn' => $bvn];
 
-            $url = config('services.verify_user2.base_url').'api/v1/verify-bvn';
+            // Previous V1 BVN Endpoint
+            // $url = config('services.verify_user2.base_url').'api/v1/verify-bvn';
+
+            // BVN V2 Endpoint
+            $url = rtrim(config('services.verify_user2.base_url'), '/').'/api/v1/verify-bvn/v2';
             $token = config('services.verify_user2.token');
             $headers = [
                 'Accept: application/json, text/plain, */*',
@@ -1601,6 +1605,7 @@ class VerificationController extends Controller
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 
@@ -1619,22 +1624,28 @@ class VerificationController extends Controller
 
             if (isset($response['respCode']) && $response['respCode'] == '000') {
 
-                $data = $response['data'];
+                $data = $response['bvn_data'] ?? ($response['data'] ?? []);
+
+                $firstName = $data['firstName'] ?? '';
+                $middleName = $data['middleName'] ?? '';
+                $lastName = $data['lastName'] ?? ($data['surname'] ?? '');
 
                 $updateData = [
-                    'name' => ucwords(strtolower($data['firstName']).' '.strtolower($data['middleName']).' '.strtolower($data['lastName'])),
-                    'dob' => $data['birthday'],
-                    'gender' => $data['gender'],
+                    'name' => ucwords(strtolower(trim("$firstName $middleName $lastName"))),
+                    'dob' => $data['dateOfBirth'] ?? ($data['birthday'] ?? ''),
+                    'gender' => $data['gender'] ?? '',
                     'kyc_status' => 'Verified',
                     'idNumber' => $bvn,
                 ];
 
-                if (! empty($data['phoneNumber'])) {
-                    $updateData['phone_number'] = $data['phoneNumber'];
+                $phone = $data['phoneNumber'] ?? ($data['phoneNumber1'] ?? ($data['phoneno'] ?? ''));
+                if (! empty($phone)) {
+                    $updateData['phone_number'] = $phone;
                 }
 
-                if (! empty($data['photo'])) {
-                    $updateData['profile_pic'] = $data['photo'];
+                $photo = $data['image'] ?? ($data['base64Image'] ?? ($data['photo'] ?? ''));
+                if (! empty($photo)) {
+                    $updateData['profile_pic'] = $photo;
                 }
 
                 auth()->user()->update($updateData);
@@ -1643,9 +1654,10 @@ class VerificationController extends Controller
 
                 return redirect()->back()->with('success', 'Your identity verification is complete, and youre all set to explore our services. Thank you for verifying your account!');
             } else {
-                Log::error('Error Verifiying User '.auth()->user()->id.': '.$response);
+                Log::error('Error Verifying User '.auth()->user()->id.': '.(is_array($response) ? json_encode($response) : $response));
+                $errMsg = $response['respMsg'] ?? ($response['message'] ?? 'An error occurred while making the BVN Verification (System Err)');
 
-                return redirect()->back()->with('error', 'An error occurred while making the BVN Verification (System Err)');
+                return redirect()->back()->with('error', $errMsg);
             }
         } catch (\Exception $e) {
             Log::error('Error Verifiying User '.auth()->user()->id.': '.$e->getMessage());
@@ -2344,7 +2356,7 @@ class VerificationController extends Controller
         // BVN Services Fee
         $ServiceFee = 0;
         $ServiceFee = Service::where('service_code', '101')->where('status', 'enabled')->first();
-        $ServiceFee = $ServiceFee->amount;
+        $ServiceFee = $ServiceFee ? $ServiceFee->amount : 0;
 
         if (! $ServiceFee) {
             return response()->json([
@@ -2357,7 +2369,7 @@ class VerificationController extends Controller
 
         // Check if wallet is funded
         $wallet = Wallet::where('user_id', $loginUserId)->first();
-        $wallet_balance = $wallet->balance;
+        $wallet_balance = $wallet ? $wallet->balance : 0;
         $balance = 0;
 
         if ($wallet_balance < $ServiceFee) {
@@ -2371,7 +2383,11 @@ class VerificationController extends Controller
 
                 $data = ['bvn' => $request->input('bvn')];
 
-                $url = config('services.verify_user2.base_url').'api/v1/verify-bvn';
+                // Previous V1 BVN Endpoint
+                // $url = config('services.verify_user2.base_url').'api/v1/verify-bvn';
+
+                // BVN V2 Endpoint
+                $url = rtrim(config('services.verify_user2.base_url'), '/').'/api/v1/verify-bvn/v2';
                 $token = config('services.verify_user2.token');
 
                 $headers = [
@@ -2387,6 +2403,7 @@ class VerificationController extends Controller
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 
@@ -2405,9 +2422,18 @@ class VerificationController extends Controller
 
                 if (isset($response['respCode']) && $response['respCode'] == '000') {
 
-                    $data = $response['data'];
+                    $bvnData = $response['bvn_data'] ?? ($response['data'] ?? []);
 
-                    $this->processResponseDataForBVN($data);
+                    // Ensure normalized key names for processResponseDataForBVN & frontend bvn.js
+                    $bvnData['bvn'] = $bvnData['bvn'] ?? ($bvnData['idNumber'] ?? $request->input('bvn'));
+                    $bvnData['firstName'] = $bvnData['firstName'] ?? '';
+                    $bvnData['lastName'] = $bvnData['lastName'] ?? ($bvnData['surname'] ?? '');
+                    $bvnData['middleName'] = $bvnData['middleName'] ?? '';
+                    $bvnData['phoneNumber'] = $bvnData['phoneNumber'] ?? ($bvnData['phoneNumber1'] ?? ($bvnData['phoneno'] ?? ''));
+                    $bvnData['birthday'] = $bvnData['birthday'] ?? ($bvnData['dateOfBirth'] ?? ($bvnData['dob'] ?? ''));
+                    $bvnData['photo'] = $bvnData['photo'] ?? ($bvnData['image'] ?? ($bvnData['base64Image'] ?? ''));
+
+                    $this->processResponseDataForBVN($bvnData);
 
                     $balance = $wallet->balance - $ServiceFee;
 
@@ -2418,29 +2444,23 @@ class VerificationController extends Controller
 
                     $this->transactionService->createTransaction($loginUserId, $ServiceFee, 'BVN Verification', $serviceDesc, 'Wallet', 'Approved');
 
-                    return json_encode(['status' => 'success', 'data' => $data]);
-                } elseif ($response['respCode'] == '99120010') {
-
-                    $balance = $wallet->balance - $ServiceFee;
-
-                    Wallet::where('user_id', $this->loginId)
-                        ->update(['balance' => $balance]);
-
-                    $serviceDesc = 'Wallet debitted with a service fee of ₦'.number_format($ServiceFee, 2);
-
-                    $this->transactionService->createTransaction($loginUserId, $ServiceFee, 'NIN Verification', $serviceDesc, 'Wallet', 'Approved');
-
+                    return json_encode(['status' => 'success', 'data' => $bvnData]);
+                } elseif (isset($response['respCode']) && in_array($response['respCode'], ['102', '99120010'])) {
                     return response()->json([
                         'status' => 'Not Found',
-                        'errors' => ['Succesfully Verified with ( NIN do not exist)'],
+                        'errors' => [$response['respMsg'] ?? 'Record not found with the provided BVN.'],
                     ], 422);
                 } else {
+                    $errMsg = $response['respMsg'] ?? ($response['message'] ?? 'Verification Failed: Please verify the BVN and try again.');
+
                     return response()->json([
                         'status' => 'Verification Failed',
-                        'errors' => ['Verification Failed: No need to worry, your wallet remains secure and intact. Please try again or contact support for assistance.'],
+                        'errors' => [$errMsg],
                     ], 422);
                 }
             } catch (\Exception $e) {
+                Log::error('BVN V2 Retrieve Error: '.$e->getMessage());
+
                 return response()->json([
                     'status' => 'Request failed',
                     'errors' => ['An error occurred while making the API request'],
@@ -2589,16 +2609,18 @@ class VerificationController extends Controller
     {
         $user = Verification::create(
             [
-                'idno' => $data['bvn'],
+                'idno' => $data['bvn'] ?? ($data['idNumber'] ?? ''),
                 'type' => 'BVN',
-                'nin' => '',
-                'first_name' => $data['firstName'],
-                'middle_name' => $data['middleName'],
-                'last_name' => $data['lastName'],
-                'phoneno' => $data['phoneNumber'],
-                'dob' => $data['birthday'],
-                'gender' => $data['gender'],
-                'photo' => $data['photo'],
+                'nin' => $data['nin'] ?? '',
+                'first_name' => $data['firstName'] ?? '',
+                'middle_name' => $data['middleName'] ?? '',
+                'last_name' => $data['lastName'] ?? ($data['surname'] ?? ''),
+                'phoneno' => $data['phoneNumber'] ?? ($data['phoneNumber1'] ?? ($data['phoneno'] ?? '')),
+                'dob' => $data['birthday'] ?? ($data['dateOfBirth'] ?? ($data['dob'] ?? '')),
+                'gender' => $data['gender'] ?? '',
+                'photo' => $data['photo'] ?? ($data['image'] ?? ($data['base64Image'] ?? '')),
+                'address' => $data['residentialAddress'] ?? null,
+                'enrollment_bank' => $data['enrollmentBank'] ?? null,
             ]
         );
     }

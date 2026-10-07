@@ -1,5 +1,13 @@
 $("#verifyBVN").on("click", function (event) {
 
+    const getMimeType = (base64) => {
+        if (!base64) return 'image/jpeg';
+        if (base64.startsWith('iVBORw0KGgo')) return 'image/png';
+        if (base64.startsWith('/9j/')) return 'image/jpeg';
+        if (base64.startsWith('R0lGOD')) return 'image/gif';
+        return 'image/jpeg';
+    };
+
     event.preventDefault();
 
     let data = new FormData(this.form);
@@ -36,6 +44,18 @@ $("#verifyBVN").on("click", function (event) {
         },
         success: function (result) {
             $("#loader").hide();
+            hideLoader();
+
+            let bvnData = result.data || {};
+            const rawPhoto = bvnData.photo || bvnData.image || bvnData.base64Image || '';
+            const mimeType = getMimeType(rawPhoto);
+            const imgSrc = rawPhoto ? (rawPhoto.startsWith('data:') ? rawPhoto : `data:${mimeType};base64, ${rawPhoto}`) : '';
+            const bvnNumber = bvnData.bvn || bvnData.idNumber || '';
+            const firstName = bvnData.firstName || '';
+            const surname = bvnData.lastName || bvnData.surname || '';
+            const middleName = bvnData.middleName || '';
+            const phoneNo = bvnData.phoneNumber || bvnData.phoneNumber1 || bvnData.phoneno || '';
+            const gender = bvnData.gender || '';
 
             validationInfo.innerHTML = `
             <div class="border border-light">
@@ -52,37 +72,37 @@ $("#verifyBVN").on("click", function (event) {
          <tbody>
             <tr>
                <th scope="row" rowspan="9">
-                  <img class="rounded" src="data:image/;base64, ${result.data.photo}" alt="User Image" style="width: 250px; height: 250px;">
+                  <img class="rounded" src="${imgSrc}" alt="User Image" style="width: 250px; height: 250px;">
                </th>
             </tr>
             <tr>
                <th scope="row" style="text-align:right; border: none ! important;">BVN</th>
-               <td style="text-align:left" ><span id="bvnno" >${result.data.bvn}</span>
+               <td style="text-align:left" ><span id="bvnno" >${bvnNumber}</span>
                </td>
             </tr>
             <tr>
                <th scope="row" style="text-align:right; border: none ! important;">FirstName</th>
-               <td  style="text-align:left">${result.data.firstName}
+               <td  style="text-align:left">${firstName}
                </td>
             </tr>
             <tr>
                <th scope="row" style="text-align:right; border: none ! important;">Surname</th>
-               <td  style="text-align:left">${result.data.lastName}
+               <td  style="text-align:left">${surname}
                </td>
             </tr>
             <tr>
                <th scope="row" style="text-align:right; border: none ! important;">Middle Name</th>
-               <td  style="text-align:left">${result.data.middleName}
+               <td  style="text-align:left">${middleName}
                </td>
             </tr>
             <tr>
                <th scope="row" style="text-align:right; border: none ! important;">Phone No</th>
-               <td  style="text-align:left">${result.data.phoneNumber}
+               <td  style="text-align:left">${phoneNo}
                </td>
             </tr>
             <tr>
                <th scope="row" style="text-align:right; border: none ! important;">Gender</th>
-               <td  style="text-align:left">${result.data.gender}
+               <td  style="text-align:left">${gender}
                </td>
             </tr>
 
@@ -95,10 +115,16 @@ $("#verifyBVN").on("click", function (event) {
         },
         error: function (data) {
             $("#loader").hide();
-            $.each(data.responseJSON.errors, function (key, value) {
+            hideLoader();
+            if (data && data.responseJSON && data.responseJSON.errors) {
+                $.each(data.responseJSON.errors, function (key, value) {
+                    $("#errorMsg").show();
+                    $("#message").html(value);
+                });
+            } else if (data && data.responseJSON && data.responseJSON.message) {
                 $("#errorMsg").show();
-                $("#message").html(value);
-            });
+                $("#message").html(data.responseJSON.message);
+            }
             setTimeout(function () {
                 $("#errorMsg").hide();
             }, 5000);
